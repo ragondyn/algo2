@@ -1,3 +1,4 @@
+with Ada.Text_IO; use Ada.Text_IO;
 
 package body arbre is
 
@@ -13,7 +14,7 @@ if (A /= Arbre_Vide) then
                 A.Compte := A.Compte + 1;
                 B := A;
                 inserer(C , A.Fils(Gauche) );
-        elsif (A.C > C)
+        elsif (A.C > C) then
                 A.Compte := A.Compte + 1;
                 B := A;
                 inserer(C , A.Fils(Droite) );
@@ -21,7 +22,7 @@ if (A /= Arbre_Vide) then
                 raise ELEMENT_DEJA_PRESENT;
         end if;
 else
-        A := new Noeud'(C,F,1,B);
+        A := new Noeud'(C,F,B,1);
 end if;
 
 end inserer;
@@ -46,7 +47,7 @@ Am:Arbre := A.Pere;
 begin
 if (A = Arbre_Vide) then
         raise ELEMENT_NON_PRESENT; 
-elsif (A.C /= C)
+elsif (A.C /= C) then
         if (A.C < C) then
         A.Compte := A.Compte - 1;
         supprimer (C , A.Fils(Droite));
@@ -83,11 +84,13 @@ end if;
 end recherche;
 
 procedure Noeuds_Voisins(A : in Arbre ; Petit_Voisin , Grand_Voisin : out Arbre) is
+--Vérifier le cas où la clé est maximale ou minimale??
+
 C: Arbre := A;
 begin
 
-if (Arbre.Fils(Gauche) = Arbre_Vide) then
-        while ( (C.Pere).Fils(Droite) /= C) loop
+if (A.Fils(Gauche) = Arbre_Vide) then
+        while ( C.Pere.Fils(Droite) /= C) loop
                 C := C.Pere;
                 end loop;
                 Petit_Voisin := C.Pere;
@@ -102,8 +105,8 @@ end if;
 
 C := A;
 
-if (Arbre.Fils(Droite) = Arbre_Vide) then
-        while ( (C.Pere).Fils(Gauche) /= C) loop
+if (A.Fils(Droite) = Arbre_Vide) then
+        while ( C.Pere.Fils(Gauche) /= C) loop
                 C := C.Pere;
                 end loop;
                 Grand_Voisin := C.Pere;
@@ -135,7 +138,7 @@ end if;
 --Parcourt des pères
 
 While (B.Pere /= Arbre_Vide) loop
-        if ((B.Pere).Fils(Gauche) /= B) then 
+        if (B.Pere.Fils(Gauche) /= B) then 
                 Nb_Petits := B.Pere.Fils(Gauche).Compte + Nb_Petits + 1;
 
         else
@@ -145,4 +148,4 @@ While (B.Pere /= Arbre_Vide) loop
 end loop;
 end Compte_Position;
 
-
+end arbre;
