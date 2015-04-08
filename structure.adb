@@ -19,15 +19,25 @@ package body structure is
                 end if;
         end;
 
+        function "=" (A,B: Point) return boolean is
+        begin
+        return (A.X = B.X) and (A.Y = B.Y);
+        end;
+
+        function "<="(A,B: Point) return boolean is
+        begin
+        return (A=B or A<B);
+        end;
         function "<" (A,B: in Segment) return boolean is
         CA: Point;
         CB: Point;
         begin
-                Intersection(A;CA);
+                Intersection(A,CA);
                 Intersection(B,CB);
                 return (CA.Y < CB.Y);
         end;
-        
+
+               
         procedure Intersection(A: in Segment; PA: out Point) is
         begin        
                 PA.X := Point_Courant.X;
@@ -37,9 +47,9 @@ package body structure is
         procedure Suppression_Segment(Indice_Point: in Natural; Arbre: in out Arbre_Segment; Entrant: in Segment_Voisin) is
         L: Liste_Segment := Entrant(Indice_Point);
         begin
-                while (L/=null) loop
+                while (not Est_Vide(L)) loop
                         supprimer(L.Val, Arbre);
-                        L := L.Suiv;
+                        L := Suivant(L);
                 end loop;
         end Suppression_Segment;
         
@@ -51,63 +61,74 @@ package body structure is
         procedure Ajout_Segment(Indice_Point: in Natural; Arbre: in out Arbre_Segment; Sortant: in Segment_Voisin) is
                 L: Liste_Segment := Sortant(Indice_Point);
                 begin
-                while L/= null loop
+                while not Est_Vide(L) loop
                 inserer(L.Val, Arbre);
-                L := L.Suiv;
+                L := Suivant(L);
                 end loop;
         end Ajout_Segment;
 
+        function ">"(A,B: Segment) return Boolean is
+        CA: Point;
+        CB: Point;
+        begin
+                Intersection(A,CA);
+                Intersection(B,CB);
+                return (CA.Y > CB.Y);
+        end;
+
+                
         
         procedure Pre_Traitement(Liste: Liste_Point; Entrant: in out Segment_Voisin; Sortant: in out Segment_Voisin) is
-        L := Liste;
+        L: Liste_Point := Liste;
         Indice: Natural := 1;
-        Precedant : Point := L.Val;
-        Premier : Point := L.Val; 
+        Precedant : Point := Valeur(L);
+        Premier : Point := Valeur(L);
+        
         begin
         
-        if L.Suiv.Val <= L.Val then
-                Inserer(Segment'(L.Val, L.Suiv.Val), Entrant.(Indice));
+        if Valeur(Suivant(L)) <= Valeur(L) then
+               Insertion_Tete(Segment'(Valeur(L), Valeur(Suivant(L))), Entrant(Indice));
         else
-                Inserer(Segment'(L.Val, L.Suiv.Val, Sortant.(Indice));
+                Insertion_Tete(Segment'(Valeur(L), Valeur(Suivant(L))), Sortant(Indice));
         end if;
 
-        L := L.Suiv;
-        while (L.Suiv /= null) loop
+        L := Suivant(L);
+        while (not Est_Vide(Suivant(L))) loop
         
-        if Precedant <= L.Val then
-                Inserer(Segment'(L.Val,Precedant), Entrant.(Indice));
+        if Precedant <= Valeur(L) then
+                Insertion_Tete(Segment'(Valeur(L),Precedant), Entrant(Indice));
         else
-                Inserer(Segment'(L.Val,Precedant, Sortant.(Indice));
+                Insertion_Tete(Segment'(Valeur(L),Precedant), Sortant(Indice));
         end if;
         
-        if L.Suiv <= L.Val then
-                Inserer(Segment'(L.Val, L.Suiv.Val), Entrant.(Indice));
+        if Valeur(Suivant(L)) <= Valeur(L) then
+                Insertion_Tete(Segment'(Valeur(L), Valeur(Suivant(L))), Entrant(Indice));
         else
-                Inserer(Segment'(L.Val, L.Suiv.Val, Sortant.(Indice));
+                Insertion_Tete(Segment'(Valeur(L), Valeur(Suivant(L))), Sortant(Indice));
         end if;
         
         Indice := Indice + 1;
-        Precedant := L.Val;
-        L := L.Suiv;
+        Precedant := Valeur(L);
+        L := Suivant(L);
 
         end loop;
 
-        if Precedant <= L.Val then
-                Inserer(Segment'(L.Val,Precedant), Entrant.(Indice));
+        if Precedant <= Valeur(L) then
+                Insertion_Tete(Segment'(Valeur(L),Precedant), Entrant(Indice));
         else
-                Inserer(Segment'(L.Val,Precedant, Sortant.(Indice));
+                Insertion_Tete(Segment'(Valeur(L),Precedant), Sortant(Indice));
         end if;
         
-        if premier <= L.Val then
-                Inserer(Segment'(L.Val, premier), Entrant.(Indice));
+        if premier <= Valeur(L) then
+                Insertion_Tete(Segment'(Valeur(L), premier), Entrant(Indice));
         else
-                Inserer(Segment'(L.Val, premier, Sortant.(Indice));
+                Insertion_Tete(Segment'(Valeur(L), premier), Sortant(Indice));
         end if;
 
-        if L.Val <= Premier then
-                Inserer(Segment'(Premier,L.Val), Entrant.(1));
+        if Valeur(L) <= Premier then
+                Insertion_Tete(Segment'(Premier,Valeur(L)), Entrant(1));
         else
-                Inserer(Segment'(Premier,L.Val, Sortant.(1));
+                Insertion_Tete(Segment'(Premier,Valeur(L)), Sortant(1));
         end if;        
 
         end Pre_Traitement;
@@ -124,7 +145,7 @@ package body structure is
                 Inserer(Segment'(Point_Courant,Point_Courant), Arbre);
                 Noeuds_Voisins(Arbre, V_Petit, V_Grand);
                 Compte_Position(Arbre, C_Petits, C_Grands);
-                Supprimer(Segment'(Point_Courant,Point_Courant));
+                Supprimer(Segment'(Point_Courant,Point_Courant),Arbre);
         end if;
 
         Suppression_Segment(Indice_Point, Arbre, Entrant);
@@ -135,16 +156,16 @@ package body structure is
                 Inserer(Segment'(Point_Courant,Point_Courant), Arbre);
                 Noeuds_Voisins(Arbre, V_Petit, V_Grand);
                 Compte_Position(Arbre, C_Petits, C_Grands);
-                Supprimer(Segment'(Point_Courant,Point_Courant));
+                Supprimer(Segment'(Point_Courant,Point_Courant),Arbre);
         end if;
 
         if R then
-                if ((C_Petits mod 2 = 1) or (C_Grands mod 2 = 1) then
+                if ((C_Petits mod 2 = 1) or (C_Grands mod 2 = 1)) then
                         
-                        Intersection(V_Petit.C, P_Petit);
-                        Intersection(V_Grand.C, P_Grand);
+                        Intersection(clef(V_Petit), P_Petit);
+                        Intersection(clef(V_Grand), P_Grand);
 
-                        Put(Segment'(P_Petit,P_Grand);
+                        Put(Segment'(P_Petit,P_Grand));
                 end if;
         
         end if;        
@@ -152,20 +173,20 @@ package body structure is
         end Traitement_Point;
 
 
-        procedure Put(in Segment: Segment) is
+        procedure Put(S: in Segment) is
         begin
-        Trace_Segment(Segment.Ext1, Segment.Ext2);        
+        Trace_Segment(S.Ext1, S.Ext2);        
         end Put;
         
         procedure Affiche_Figure(Polygone: in Liste_Point) is
                 L:Liste_Point := Polygone;
-                Premier: Point := L.Val;
+                Premier: Point := Valeur(L);
                 begin
-                while L.Suiv /= null loop
-                Put(Segment'(L.Val,L.Suiv.Val));
-                L := L.Suiv;
+                while not Est_Vide(Suivant(L)) loop
+                Put(Segment'(Valeur(L),Valeur(Suivant(L))));
+                L := Suivant(L);
                 end loop;
-                Put(Segment'(L.Val,Premier));
+                Put(Segment'(Valeur(L),Premier));
         end Affiche_Figure;
 
 end structure;       

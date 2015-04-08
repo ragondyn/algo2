@@ -4,9 +4,6 @@ with Structure; use Structure;
 
 package body Svg is
 
-    Zoom: Float;
-    Largeur: Integer;
-    Hauteur: Integer;
     Fichier: File_Type;
     
     procedure Initialisation(NomFichier: in String) is

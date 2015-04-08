@@ -22,7 +22,7 @@ Courant := L;
 L := L.Suiv;
 Courant.Suiv := TeteLibre;
 else
-raise Liste_Vide;
+raise Erreur_Liste_Vide;
 end if;
 end;
 procedure Vider_Liste(L: in out Liste) is
@@ -51,4 +51,27 @@ function Taille(L: Liste) return Natural is
      end if;
      end;
 
+procedure Tri(L:in out Liste) is
+begin
+null;
+end;
+
+function Suivant(L: Liste) return Liste is
+begin
+return L.Suiv;
+exception
+when others => raise Erreur_Liste_Vide;
+end Suivant;
+
+function Est_Vide(L: Liste) return boolean is
+begin
+        return (Taille(L)=0) ;
+end;
+
+function Valeur(L: Liste) return element is
+begin
+return L.Val;
+exception
+when others => raise Erreur_Liste_Vide;
+end Valeur;
 end Liste;

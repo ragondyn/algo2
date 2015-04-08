@@ -148,4 +148,9 @@ While (B.Pere /= Arbre_Vide) loop
 end loop;
 end Compte_Position;
 
+function clef(A:Arbre) return Type_Clef is
+        begin
+        return A.C;
+        end clef;
+
 end arbre;

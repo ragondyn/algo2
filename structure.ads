@@ -15,20 +15,27 @@ package structure is
                 Ext2: Point; 
         end record;
 
+
+        function "<" (A,B: Point) return boolean;
+        function "=" (A,B: Point) return boolean;
+        function "<="(A,B: Point) return boolean;
+        function "<"(A,B: Segment) return boolean;
+        function ">"(A,B: Segment) return boolean;
+        function "="(A,B: Segment) return boolean;
+
         package Package_Arbre_Segment is new Arbre(Segment);
-        type Arbre_Segment is Package_Arbre_Segment.Arbre;
+        use Package_Arbre_Segment;
+        type Arbre_Segment is new Package_Arbre_Segment.Arbre;
         package Package_Liste_Point is new Liste(Point);
-        type Liste_Point is Package_Liste_Point is new Package_Liste_Point.Liste;
+        use Package_liste_Point;
+        type Liste_Point is new Package_Liste_Point.Liste;
         package Package_Liste_Segment is new Liste(Segment);
-        type Liste_Segment is Package_Liste_Segment is new Package_Liste_Segment.Liste; 
+        use Package_Liste_Segment;
+        type Liste_Segment is new Package_Liste_Segment.Liste; 
 
         type Segment_Voisin is Array(Natural range <>) of Liste_Segment;
                 -- stocke les segments Avant/Après le ième point
 
-        function "<" (A,B: Point) return boolean;
-        function "<" (A,B: Segment) return boolean;
-        function "=" (A,B: Segment) return boolean;
-        
         procedure Intersection(A: in Segment; PA: out Point);
         
         procedure Traitement_Point(Indice_Point: in Natural; Arbre: in out Arbre_Segment; Entrant: in out Segment_Voisin; Sortant: in out Segment_Voisin);
@@ -41,7 +48,7 @@ package structure is
         procedure Suppression_Segment(Indice_Point: in Natural; Arbre: in out Arbre_Segment; Entrant: in Segment_Voisin);
 
         procedure Ajout_Segment(Indice_Point: in Natural; Arbre: in out Arbre_Segment; Sortant: in Segment_Voisin);
-        procedure Put(Segment: in Segment);
-        
+        procedure Put(S: in Segment);
+        procedure Affiche_Figure(Polygone: in Liste_Point);       
 
 end structure;
