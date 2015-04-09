@@ -3,7 +3,7 @@ with Ada.Text_IO; use Ada.Text_IO;
 package body arbre is
 
 procedure inserer(C: in Type_Clef ; A: in out Arbre) is
-
+--OK
 F: Tableau_Fils := (others => Arbre_Vide);
 B:Arbre := Arbre_Vide;
 begin
@@ -13,11 +13,11 @@ if (A /= Arbre_Vide) then
         if (A.C < C) then
                 A.Compte := A.Compte + 1;
                 B := A;
-                inserer(C , A.Fils(Gauche) );
+                inserer(C , A.Fils(Droite) );
         elsif (A.C > C) then
                 A.Compte := A.Compte + 1;
                 B := A;
-                inserer(C , A.Fils(Droite) );
+                inserer(C , A.Fils(Gauche) );
         else
                 raise ELEMENT_DEJA_PRESENT;
         end if;
@@ -36,12 +36,15 @@ if (A.Fils(Gauche) /= Arbre_Vide) then
         else
         C := A.C;
         A := A.Fils(Droite);
+        if A /= Arbre_Vide then 
         A.Pere := Am;
+        end if;
 end if;
 end min;
 
 
 procedure supprimer(C : in Type_Clef ; A : in out Arbre) is
+--OK
 Cm: Type_Clef;
 Am:Arbre := A.Pere;
 begin
@@ -62,7 +65,9 @@ else
                 A.Compte := A.Compte - 1;
         else
                 A := A.Fils(Gauche);
+                if (A /= Arbre_Vide) then
                 A.Pere := Am;
+                end if;
         end if;
 end if;
 end supprimer;
@@ -88,9 +93,9 @@ procedure Noeuds_Voisins(A : in Arbre ; Petit_Voisin , Grand_Voisin : out Arbre)
 
 C: Arbre := A;
 begin
-
+if A /= Arbre_Vide then
 if (A.Fils(Gauche) = Arbre_Vide) then
-        while ( C.Pere.Fils(Droite) /= C) loop
+        while ( C.Pere /= Arbre_Vide and then C.Pere.Fils(Droite) /= C) loop
                 C := C.Pere;
                 end loop;
                 Petit_Voisin := C.Pere;
@@ -106,7 +111,7 @@ end if;
 C := A;
 
 if (A.Fils(Droite) = Arbre_Vide) then
-        while ( C.Pere.Fils(Gauche) /= C) loop
+        while ( C.Pere /= Arbre_Vide and then C.Pere.Fils(Gauche) /= C) loop
                 C := C.Pere;
                 end loop;
                 Grand_Voisin := C.Pere;
@@ -117,15 +122,22 @@ else
         end loop;
         Grand_Voisin := C;
 end if;
+
+else
+Petit_Voisin := Arbre_Vide;
+Grand_Voisin := Arbre_Vide;
+end if;
 end Noeuds_Voisins;
 
 procedure Compte_Position(A : in Arbre ; Nb_petits, Nb_Grands : out Natural) is
 B:Arbre := A;
 begin
+
 --Initialisation
 
 Nb_petits := 0;
 Nb_Grands := 0;
+if (A /= Arbre_Vide) then
 
 if (A.Fils(Gauche) /= Arbre_Vide) then
         Nb_petits := A.Fils(Gauche).Compte;
@@ -146,11 +158,24 @@ While (B.Pere /= Arbre_Vide) loop
         end if;
         B := B.Pere;
 end loop;
+
+end if;
+
 end Compte_Position;
 
 function clef(A:Arbre) return Type_Clef is
         begin
         return A.C;
         end clef;
+
+function Fils_Gauche(A: Arbre) return Arbre is
+begin
+        return (A.Fils(Gauche));
+        end;
+function Fils_Droit(A: Arbre) return Arbre is
+begin
+        return (A.Fils(Droite));
+        end;
+
 
 end arbre;

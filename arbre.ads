@@ -26,6 +26,8 @@ function recherche(C : Type_Clef ; A: Arbre) return boolean;
 procedure Noeuds_Voisins(A : in Arbre ; Petit_Voisin ,Grand_Voisin: out Arbre );
 procedure Compte_Position (A : in Arbre ; Nb_Petits , Nb_Grands : out Natural );
 function clef(A: Arbre) return Type_Clef;
+function Fils_Gauche(A: Arbre) return Arbre;
+function Fils_Droit(A: Arbre) return Arbre;
 
 ELEMENT_DEJA_PRESENT : Exception;
 ELEMENT_NON_PRESENT : Exception;

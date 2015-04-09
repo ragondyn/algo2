@@ -1,45 +1,49 @@
-with Ada.Text_IO, Ada.Integer_Text_IO, Liste, Arbre;
-use Ada.Text_IO, Ada.Integer_Text_IO, Package_Arbre_Integer, Package_Liste_Arbre;
+with Ada.Text_IO, Ada.Integer_Text_IO;
+use Ada.Text_IO, Ada.Integer_Text_IO;
+with Arbre;
 
-package body affichage_arbre is
+procedure Affichage_Arbre is
 
-procedure Putaux(LH: in out Liste_Arbre; LB: in out Liste_Arbre) is
-B: Arbre_Integer;
+Package Package_Arbre_Integer is new Arbre(Integer);
+
+type Arbre_Integer is new Package_Arbre_Integer.Arbre;
+use Package_Arbre_Integer;
+
+procedure affiche(A: in Arbre_Integer) is
 begin
 
-Supprime_Tete(B,LH);
-
-for I in 1..(2**Hauteur(B)) loop
-Put(' ');
-end loop;
-
-Put(B.C);
-
-if (A.Fils(Gauche) /= Arbre_Vide) then
-Insertion_Tete(A.Fils(Gauche), LB);
+if (A /= null) then
+Put(A.C);
+Put(" (");
+affiche(Fils_Gauche(A));
+Put (" ");
+affiche(Fils_Droit(A));
+Put(" )");
+else
+Put("VIDE");
 end if;
+end affiche;
 
-if (A.Fils(Droite) /= Arbre_Vide) then
-Insertion_Tete(A.Fils(Droite), LB);
-end if;
+A: Arbre_Integer;
+B,C: Arbre_Integer;
+Bc, Cc: Integer;
+begin
 
-if (LH = null) then
-LH := LB;
-LB := null;
+
+-- ZONE DE TESTS --
+
+--Inserer(1,A);
+--Inserer(0,A);
+--Inserer(2,A);
+--Inserer(5,A);
+
+Affiche(A);
 New_Line;
-end if;
-
-if (LH/=null) then
-Putaux(LH,LB);
-end if;
-
-end Putaux;
-
-procedure Put(A: in Arbre_Integer) is
-LH, LB: Liste_Arbre := null;
-begin
-LH := A;
-Putaux(LH,LB);
-end Put;
-
-end affichage_arbre;
+Noeuds_Voisins(A,B,C);
+Affiche(B);
+New_Line;
+Affiche(C);
+Compte_Position(A, Bc, Cc);
+Put(BC);
+Put(Cc);
+end;
