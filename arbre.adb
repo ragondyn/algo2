@@ -2,34 +2,35 @@ with Ada.Text_IO; use Ada.Text_IO;
 
 package body arbre is
 
-procedure insererbis(C: in Type_Clef ; A: in out Arbre; B: in out Arbre) is
-
-F: Tableau_Fils := (others => Arbre_Vide);
-
+procedure inserer(C: in Type_Clef; A:in out Arbre) is
+F: Tableau_Fils := (others => null);
+B,Pere: Arbre;
+D: Direction;
 begin
-if (A /= Arbre_Vide) then
-        if (A.C < C) then
-                A.Compte := A.Compte + 1;
-                B := A;
-                insererbis(C , A.Fils(Droite), B );
-        elsif (A.C > C) then
-                A.Compte := A.Compte + 1;
-                B := A;
-                insererbis(C , A.Fils(Gauche), B );
+B := A;
+Pere := Arbre_Vide;
+while (B /= Arbre_Vide) loop
+
+        if (B.C < C) then
+                B.Compte:= B.Compte +1;
+                Pere := B;
+                B := B.Fils(Droite);
+                D := Droite;
+        elsif (B.C > C) then
+                B.Compte:= B.Compte +1;
+                Pere := B;
+                B := B.Fils(Gauche);
+                D := Gauche;
+       else 
+       raise Element_Deja_Present;
+       end if;
+       end loop;
+       if (Pere/=Arbre_Vide) then
+        Pere.Fils(D) := new Noeud'(C,F,Pere,1);
         else
-                raise ELEMENT_DEJA_PRESENT;
+        A := new Noeud'(C,F,Pere,1);
         end if;
-else
-        A := new Noeud'(C,F,B,1);
-end if;
 end;
-
-
-procedure inserer(C: in Type_Clef; A: in out Arbre) is
-begin
-insererbis(C,A,Arbre_Vide);
-end inserer;
-
 function Pere(A: Arbre) return Arbre is
         begin
         return A.Pere;
@@ -169,10 +170,17 @@ end if;
 
 While (B.Pere /= Arbre_Vide) loop
         if (B.Pere.Fils(Gauche) /= B) then 
+                if B.Pere.Fils(Gauche) /= Arbre_Vide then        
                 Nb_Petits := B.Pere.Fils(Gauche).Compte + Nb_Petits + 1;
-
+                else
+                Nb_Petits := Nb_Petits +1;
+                end if;
         else
+                if (B.Pere.Fils(Droite) /= Arbre_Vide) then
                 Nb_Grands := B.Pere.Fils(Droite).Compte + Nb_Grands + 1;
+                else
+                Nb_Grands := Nb_Grands + 1;
+                end if;
         end if;
         B := B.Pere;
 end loop;
