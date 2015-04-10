@@ -2,48 +2,39 @@ with Ada.Text_IO, Ada.Integer_Text_IO;
 use Ada.Text_IO, Ada.Integer_Text_IO;
 with Arbre;
 
-procedure Affichage_Arbre is
+
+
+procedure affichage_arbre is
 
 Package Package_Arbre_Integer is new Arbre(Integer);
-
 type Arbre_Integer is new Package_Arbre_Integer.Arbre;
 use Package_Arbre_Integer;
 
-procedure affiche(A: in Arbre_Integer) is
+
+A,H,B,C: Arbre_Integer;
 begin
-
-if (A /= null) then
-Put(A.C);
-Put(" (");
-affiche(Fils_Gauche(A));
-Put (" ");
-affiche(Fils_Droit(A));
-Put(" )");
-else
-Put("VIDE");
-end if;
-end affiche;
-
-A: Arbre_Integer;
-B,C: Arbre_Integer;
-Bc, Cc: Integer;
-begin
-
 
 -- ZONE DE TESTS --
 
 --Inserer(1,A);
---Inserer(0,A);
---Inserer(2,A);
---Inserer(5,A);
+Inserer(4,A);
+Inserer(2,A);
+Inserer(5,A);
+Inserer(12,A);
+Inserer(1,A);
+Inserer(3,A);
+affiche(A);
+Put(Taille(A));
 
-Affiche(A);
+H := Fils_Gauche (A);
+--Affiche(A);
+--New_Line;
+Noeuds_Voisins(H,B,C);
 New_Line;
-Noeuds_Voisins(A,B,C);
 Affiche(B);
 New_Line;
 Affiche(C);
-Compte_Position(A, Bc, Cc);
-Put(BC);
-Put(Cc);
-end;
+--Compte_Position(A, Bc, Cc);
+--Put(BC);
+--Put(Cc);
+end affichage_arbre; 

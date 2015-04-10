@@ -4,7 +4,8 @@ generic
         type Type_Clef is private ;
         with function "<"(A,B: Type_Clef) return Boolean is <>;
         with function ">"(A,B: Type_Clef) return Boolean is <>;
-
+        with function "="(A,B: Type_Clef) return Boolean is <>;
+        with procedure Put(C: in Type_Clef) is <>;
 package arbre is
 
 type Noeud ;
@@ -15,7 +16,7 @@ type Noeud is record
 C : Type_Clef ;
 Fils : Tableau_Fils ;
 Pere : Arbre ;
-Compte : Positive ; --nombre de noeuds dans le sous−arbre
+Compte : Integer ; --nombre de noeuds dans le sous−arbre
 end record ;
  
 Arbre_Vide: Arbre := null;
@@ -28,7 +29,8 @@ procedure Compte_Position (A : in Arbre ; Nb_Petits , Nb_Grands : out Natural );
 function clef(A: Arbre) return Type_Clef;
 function Fils_Gauche(A: Arbre) return Arbre;
 function Fils_Droit(A: Arbre) return Arbre;
-
+function Taille(A:Arbre) return Integer;
+function Est_Vide(A:Arbre) return Boolean;
 ELEMENT_DEJA_PRESENT : Exception;
 ELEMENT_NON_PRESENT : Exception;
 

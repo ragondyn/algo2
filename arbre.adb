@@ -27,6 +27,12 @@ end if;
 
 end inserer;
 
+function Taille(A:Arbre) return Integer is
+begin
+        return A.Compte;
+        exception 
+        when others => return 0;
+        end;
 procedure min(A : in out Arbre; C : out Type_Clef) is
 Am : Arbre := A.Pere;
 begin
@@ -46,11 +52,14 @@ end min;
 procedure supprimer(C : in Type_Clef ; A : in out Arbre) is
 --OK
 Cm: Type_Clef;
-Am:Arbre := A.Pere;
+Am: Arbre;
 begin
-if (A = Arbre_Vide) then
-        raise ELEMENT_NON_PRESENT; 
+if (A = Arbre_Vide) then 
+        raise ELEMENT_NON_PRESENT;
 elsif (A.C /= C) then
+        Am:= A.Pere;
+        Put(A.C);
+        New_Line;
         if (A.C < C) then
         A.Compte := A.Compte - 1;
         supprimer (C , A.Fils(Droite));
@@ -70,6 +79,7 @@ else
                 end if;
         end if;
 end if;
+
 end supprimer;
 
 
@@ -176,6 +186,9 @@ function Fils_Droit(A: Arbre) return Arbre is
 begin
         return (A.Fils(Droite));
         end;
-
+function Est_Vide(A: in Arbre) return Boolean is
+        begin
+        return A=Arbre_Vide;
+        end;
 
 end arbre;

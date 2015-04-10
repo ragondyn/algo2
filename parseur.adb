@@ -47,7 +47,7 @@ package body Parseur is
             for I in 1..Nombre_Sommet loop
         --On lit le fichier
             Lire_Coord(X,Y);
-            Insertion_Tete(Point'(X,Y),Polygone);
+            Insertion_Queue(Point'(X,Y),Polygone);
             end loop;
 
     --exception

@@ -6,9 +6,9 @@ use Structure;
 package Svg is
 
     
-    Zoom: Float;
-    Largeur: Integer;
-    Hauteur: Integer;
+    Zoom: Float := 10.0;
+    Largeur: Integer := 50;
+    Hauteur: Integer := 50;
 
     procedure Initialisation(NomFichier: in String);
     

@@ -33,6 +33,23 @@ Supprime_Tete(X,L);
 end loop;
 end;
 
+procedure Insertion_Queue(X: in Element; L: in out Liste) is
+        A: Liste := L;
+        B: Liste := L;
+        begin
+                while (A /= null) loop
+                    B := A;
+                    A := A.Suiv;
+                        end loop;
+                A := new Cellule'(X,null);
+                if (B /= null) then
+                B.Suiv := A;
+                else
+                L := A;
+  end if;
+  end;
+
+
 function Existe_Liste(X: in Element; L: in Liste) return boolean is
 begin
 if L /= null then
@@ -52,8 +69,40 @@ function Taille(L: Liste) return Natural is
      end;
 
 procedure Tri(L:in out Liste) is
+A: Liste := L ;
+E: Element ;
 begin
-null;
+        if (L/=null) then
+        E := L.Val;
+        while (A /= null) loop
+                if (A.Val < E) then
+                        E := A.Val;
+                end if;
+                A := A.Suiv;
+        end loop;
+        Supprimer(L,E);
+        Insertion_Tete(E,L);
+        Tri(L.Suiv);
+        else
+        null;
+        end if;
+end;
+procedure Supprimer(L: in out Liste; X: in Element) is
+A : Liste := L;
+B : Liste := L;
+begin
+        if (A.Val = X) then
+                L := L.Suiv;
+                else
+        While (A /= null) loop
+        
+        if (A.Val = X) then 
+                B.Suiv := A.Suiv;
+        end if;
+        B := A;
+        A := A.Suiv;
+        end loop;
+        end if;
 end;
 
 function Suivant(L: Liste) return Liste is
@@ -74,4 +123,21 @@ return L.Val;
 exception
 when others => raise Erreur_Liste_Vide;
 end Valeur;
+
+procedure copie(A: in Liste; B: out Liste) is
+C :Liste := A.Suiv;
+begin
+B := new Cellule'(A.Val,null);
+while C /= null loop
+Insertion_Queue(C.Val,B);
+C := C.Suiv;
+end loop;
+end copie;
+procedure put(A: in Liste) is
+begin
+if (A /= null) then
+        Put(A.Val);
+        Put(A.Suiv);
+end if;
+end;
 end Liste;

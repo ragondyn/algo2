@@ -22,7 +22,9 @@ package structure is
         function "<"(A,B: Segment) return boolean;
         function ">"(A,B: Segment) return boolean;
         function "="(A,B: Segment) return boolean;
-
+        
+        procedure Put(S: in Segment);
+        procedure Put(P: in Point);
         package Package_Arbre_Segment is new Arbre(Segment);
         use Package_Arbre_Segment;
         type Arbre_Segment is new Package_Arbre_Segment.Arbre;
@@ -36,19 +38,20 @@ package structure is
         type Segment_Voisin is Array(Natural range <>) of Liste_Segment;
                 -- stocke les segments Avant/Après le ième point
 
+        procedure Pute(S: in Segment);
+        procedure affiche(A: in Arbre_Segment);
         procedure Intersection(A: in Segment; PA: out Point);
-        
-        procedure Traitement_Point(Indice_Point: in Natural; Arbre: in out Arbre_Segment; Entrant: in out Segment_Voisin; Sortant: in out Segment_Voisin);
+        procedure Traitement_Point(Indice_Point_Courant: in Natural; Arbre: in out Arbre_Segment; Entrant: in out Segment_Voisin; Sortant: in out Segment_Voisin);
                 --Algorithme principal décrit par le sujet
 
         procedure Pre_Traitement(Liste: Liste_Point; Entrant: in out Segment_Voisin; Sortant: in out Segment_Voisin);
                 --Parcourt les points du polygones, et détermine pour chaque point les segments arrivant/partant de chaque point et les stocke dans Entrant/Sortant.
                 --Prévoir un Tri de Polygone dans decoupe_polygone.adb
         
-        procedure Suppression_Segment(Indice_Point: in Natural; Arbre: in out Arbre_Segment; Entrant: in Segment_Voisin);
+        procedure Suppression_Segment(Indice_Point_Courant: in Natural; Arbre: in out Arbre_Segment; Entrant: in Segment_Voisin);
 
-        procedure Ajout_Segment(Indice_Point: in Natural; Arbre: in out Arbre_Segment; Sortant: in Segment_Voisin);
-        procedure Put(S: in Segment);
+        procedure Ajout_Segment(Indice_Point_Courant: in Natural; Arbre: in out Arbre_Segment; Sortant: in Segment_Voisin);
+       
         procedure Affiche_Figure(Polygone: in Liste_Point);       
 
 end structure;
