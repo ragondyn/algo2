@@ -159,6 +159,7 @@ package body structure is
         procedure Traitement_Point(Indice_Point_Courant: in Natural; Arbre: in out Arbre_Segment; Entrant: in out Segment_Voisin; Sortant: in out Segment_Voisin) is
         V_Petit, V_Grand: Arbre_Segment;
         P_Petit, P_Grand: Point;
+        B: Arbre_Segment;
         C_Petits, C_Grands: Natural;
         R: Boolean := False;
         L: Liste_Segment;
@@ -168,13 +169,16 @@ package body structure is
                 Put("A1");
                 New_Line;
                 R := True;
+
                 Inserer(Segment'(Point_Courant,Point_Courant), Arbre);
-                Noeuds_Voisins(Arbre, V_Petit, V_Grand);
-                Compte_Position(Arbre, C_Petits, C_Grands);
+                B := recherche(Segment'(Point_Courant,Point_Courant), Arbre);
+                Noeuds_Voisins(B, V_Petit, V_Grand);
+                Compte_Position(B, C_Petits, C_Grands);
                 Put("Suppression du segment [PC,PC]");
                 New_Line;
                 Supprimer(Segment'(Point_Courant,Point_Courant),Arbre);
-               
+              
+
                 
         end if;
         
@@ -212,20 +216,47 @@ package body structure is
                 R := True;
                 put("A2");
                 Inserer(Segment'(Point_Courant,Point_Courant), Arbre);
-                Noeuds_Voisins(Arbre, V_Petit, V_Grand);
-                Compte_Position(Arbre, C_Petits, C_Grands);
+                B := Recherche(Segment'(Point_Courant, Point_Courant), Arbre);
+                Noeuds_Voisins(B, V_Petit, V_Grand);
+                Compte_Position(B, C_Petits, C_Grands);
+                Put_Line("Suppression [PC;PC]");
+                New_Line;
                 Supprimer(Segment'(Point_Courant,Point_Courant),Arbre);
+
         end if;
         Put_Line("Etape 4");
         if R then
+                
+                New_Line;
+                Put_Line("V_petit, V_grand =");
+                
+                Affiche(V_Petit);
+                Put("     ");
+                Affiche(V_Grand);
+                New_Line;
+
+
+                Put_Line("Arbre");
+                New_Line;
+                Affiche(Arbre);
+                New_Line;
+                Put_Line("c_petit, c_grand =");
+                
+                Put(C_Petits);
+                Put(C_Grands);
+                New_Line;
                 if ((C_Petits mod 2 = 1) or (C_Grands mod 2 = 1)) then
                         
+                        if not Est_Vide(V_Petit) then
                         Intersection(clef(V_Petit), P_Petit);
+                        Pute(Segment'(P_Petit, Point_Courant));
+                        end if;
+                        if not Est_Vide(V_Grand) then
                         Intersection(clef(V_Grand), P_Grand);
+                        Pute(Segment'(P_Grand, Point_Courant)); 
+                        end if;
                         Put_Line ("Ecriture du segment ");
-                        Put(Segment'(P_Petit,P_Grand));
-                        Pute(Segment'(P_Petit,P_Grand));
-
+                        
                       
                 end if;
         

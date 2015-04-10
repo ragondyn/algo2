@@ -2,30 +2,38 @@ with Ada.Text_IO; use Ada.Text_IO;
 
 package body arbre is
 
-procedure inserer(C: in Type_Clef ; A: in out Arbre) is
---OK
+procedure insererbis(C: in Type_Clef ; A: in out Arbre; B: in out Arbre) is
+
 F: Tableau_Fils := (others => Arbre_Vide);
-B:Arbre := Arbre_Vide;
+
 begin
-
-
 if (A /= Arbre_Vide) then
         if (A.C < C) then
                 A.Compte := A.Compte + 1;
                 B := A;
-                inserer(C , A.Fils(Droite) );
+                insererbis(C , A.Fils(Droite), B );
         elsif (A.C > C) then
                 A.Compte := A.Compte + 1;
                 B := A;
-                inserer(C , A.Fils(Gauche) );
+                insererbis(C , A.Fils(Gauche), B );
         else
                 raise ELEMENT_DEJA_PRESENT;
         end if;
 else
         A := new Noeud'(C,F,B,1);
 end if;
+end;
 
+
+procedure inserer(C: in Type_Clef; A: in out Arbre) is
+begin
+insererbis(C,A,Arbre_Vide);
 end inserer;
+
+function Pere(A: Arbre) return Arbre is
+        begin
+        return A.Pere;
+        end;
 
 function Taille(A:Arbre) return Integer is
 begin
@@ -83,13 +91,13 @@ end if;
 end supprimer;
 
 
-function recherche( C : Type_Clef ; A : Arbre) return Boolean is
+function recherche( C : Type_Clef ; A : Arbre) return Arbre is
 begin
 if (A = Arbre_Vide) then
-        return False;
+        return Arbre_Vide;
 else
         if (A.C = C) then
-                return true;
+                return A;
         elsif (A.C < C) then
                 return recherche(C , A.Fils(Droite));
         else
@@ -205,7 +213,5 @@ function Est_Vide(A: in Arbre) return Boolean is
                 Put("VIDE");
                 end if;
         end affiche;
-
-
 
 end arbre;

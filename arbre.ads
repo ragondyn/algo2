@@ -23,11 +23,12 @@ Arbre_Vide: Arbre := null;
 
 procedure inserer(C : in Type_Clef ; A : in out Arbre);
 procedure supprimer(C : in Type_Clef ; A : in out Arbre);
-function recherche(C : Type_Clef ; A: Arbre) return boolean;
+function recherche(C : Type_Clef ; A: Arbre) return Arbre;
 procedure Noeuds_Voisins(A : in Arbre ; Petit_Voisin ,Grand_Voisin: out Arbre );
 procedure Compte_Position (A : in Arbre ; Nb_Petits , Nb_Grands : out Natural );
 procedure affiche (A: in Arbre);
 function clef(A: Arbre) return Type_Clef;
+function pere(A:Arbre) return arbre;
 function Fils_Gauche(A: Arbre) return Arbre;
 function Fils_Droit(A: Arbre) return Arbre;
 function Taille(A:Arbre) return Integer;
