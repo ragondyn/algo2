@@ -190,5 +190,22 @@ function Est_Vide(A: in Arbre) return Boolean is
         begin
         return A=Arbre_Vide;
         end;
+ 
+        procedure affiche(A: in Arbre) is
+                begin
+
+                if (A /= null) then
+                Put(A.C);
+                Put(" (");
+                 affiche(Fils_Gauche(A));
+                Put (" ");
+                affiche(Fils_Droit(A));
+                Put(" )");
+                else
+                Put("VIDE");
+                end if;
+        end affiche;
+
+
 
 end arbre;

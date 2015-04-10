@@ -39,7 +39,7 @@ package structure is
                 -- stocke les segments Avant/Après le ième point
 
         procedure Pute(S: in Segment);
-        procedure affiche(A: in Arbre_Segment);
+
         procedure Intersection(A: in Segment; PA: out Point);
         procedure Traitement_Point(Indice_Point_Courant: in Natural; Arbre: in out Arbre_Segment; Entrant: in out Segment_Voisin; Sortant: in out Segment_Voisin);
                 --Algorithme principal décrit par le sujet

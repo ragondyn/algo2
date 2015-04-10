@@ -6,11 +6,13 @@ with Arbre;
 
 procedure affichage_arbre is
 
+procedure put(A: in Integer) is
+        begin
+        Ada.Integer_Text_IO.Put(A);
+        end put;
 Package Package_Arbre_Integer is new Arbre(Integer);
 type Arbre_Integer is new Package_Arbre_Integer.Arbre;
 use Package_Arbre_Integer;
-
-
 A,H,B,C: Arbre_Integer;
 begin
 
@@ -23,13 +25,16 @@ Inserer(5,A);
 Inserer(12,A);
 Inserer(1,A);
 Inserer(3,A);
-affiche(A);
-Put(Taille(A));
+Inserer(40,A);
+Inserer(23,A);
+Inserer(13,A);
+Affiche(A);
 
-H := Fils_Gauche (A);
---Affiche(A);
---New_Line;
-Noeuds_Voisins(H,B,C);
+H := Fils_Droit (A);
+New_Line;
+--Affiche(H);
+New_Line;
+Noeuds_Voisins(A,B,C);
 New_Line;
 Affiche(B);
 New_Line;

@@ -240,20 +240,7 @@ package body structure is
         Put(P.Y);
         end;
         
-        procedure affiche(A: in Arbre_Segment) is
-        begin
-
-        if (A /= null) then
-        Put(A.C);
-        Put(" (");
-        affiche(Fils_Gauche(A));
-        Put (" ");
-        affiche(Fils_Droit(A));
-        Put(" )");
-        else
-        Put("VIDE");
-        end if;
-        end affiche;
+        
 
 
         procedure Put(S: in Segment) is
